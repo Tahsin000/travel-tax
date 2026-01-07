@@ -12,6 +12,14 @@ export const events = [
     duration: '3 Days / 2 Nights',
     location: "Cox's Bazar, Bangladesh",
     maxGuests: 20,
+    seats_left: 5,
+    date: '2026-02-15',
+    region: 'Coastal',
+    budget: 'Mid-Range',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 12500, description: 'Standard accommodation, group tours' },
+      { id: 'premium', name: 'Premium', price: 18500, description: 'Deluxe rooms, private guide, premium meals' }
+    ],
     included: ['Accommodation', 'Breakfast & Dinner', 'Transportation', 'Tour Guide'],
     itinerary: [
       { day: 1, title: 'Arrival & Beach Exploration', activities: 'Check-in, sunset at main beach, welcome dinner' },
@@ -30,6 +38,14 @@ export const events = [
     duration: '4 Days / 3 Nights',
     location: 'Sundarbans, Bangladesh',
     maxGuests: 15,
+    seats_left: 12,
+    date: '2026-03-10',
+    region: 'Forest',
+    budget: 'Premium',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 18000, description: 'Shared boat, standard meals' },
+      { id: 'premium', name: 'Premium', price: 25000, description: 'Private boat, gourmet meals, expert guide' }
+    ],
     included: ['Boat Accommodation', 'All Meals', 'Wildlife Guide', 'Permits'],
     itinerary: [
       { day: 1, title: 'Journey Begins', activities: 'Departure from Dhaka, boat boarding, evening cruise' },
@@ -49,6 +65,14 @@ export const events = [
     duration: '3 Days / 2 Nights',
     location: 'Sylhet, Bangladesh',
     maxGuests: 25,
+    seats_left: 8,
+    date: '2026-02-20',
+    region: 'Hill',
+    budget: 'Mid-Range',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 15000, description: 'Hotel stay, group transport' },
+      { id: 'premium', name: 'Premium', price: 21000, description: 'Resort stay, private car, photography guide' }
+    ],
     included: ['Hotel Stay', 'Breakfast', 'Transportation', 'Entry Fees'],
     itinerary: [
       { day: 1, title: 'Tea Estate Tour', activities: 'Visit tea gardens, tea tasting, local cuisine' },
@@ -67,6 +91,14 @@ export const events = [
     duration: '2 Days / 1 Night',
     location: 'Sajek Valley, Bangladesh',
     maxGuests: 18,
+    seats_left: 3,
+    date: '2026-02-25',
+    region: 'Hill',
+    budget: 'Budget',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 9500, description: 'Cottage stay, shared transport' },
+      { id: 'premium', name: 'Premium', price: 14500, description: 'Premium cottage, private jeep, bonfire' }
+    ],
     included: ['Cottage Stay', 'Meals', '4x4 Transport', 'Bonfire'],
     itinerary: [
       { day: 1, title: 'Mountain Journey', activities: 'Scenic drive, check-in, sunset viewing, bonfire night' },
@@ -84,6 +116,14 @@ export const events = [
     duration: '5 Days / 4 Nights',
     location: 'Bandarban, Bangladesh',
     maxGuests: 12,
+    seats_left: 15,
+    date: '2026-03-05',
+    region: 'Hill',
+    budget: 'Premium',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 22000, description: 'Camping & basic hotels' },
+      { id: 'premium', name: 'Premium', price: 30000, description: 'Premium hotels, expert trekking guide' }
+    ],
     included: ['Camping & Hotels', 'All Meals', 'Trekking Guide', 'Permits'],
     itinerary: [
       { day: 1, title: 'Arrival', activities: 'Nilgiri hills, golden temple, check-in' },
@@ -104,6 +144,14 @@ export const events = [
     duration: '3 Days / 2 Nights',
     location: "Saint Martin's Island, Bangladesh",
     maxGuests: 20,
+    seats_left: 7,
+    date: '2026-03-15',
+    region: 'Coastal',
+    budget: 'Mid-Range',
+    packages: [
+      { id: 'economy', name: 'Economy', price: 16500, description: 'Beach resort, group activities' },
+      { id: 'premium', name: 'Premium', price: 24500, description: 'Beachfront villa, private snorkeling guide' }
+    ],
     included: ['Beach Resort', 'Meals', 'Ship Transfer', 'Snorkeling Gear'],
     itinerary: [
       { day: 1, title: 'Island Arrival', activities: 'Ship journey, check-in, beach exploration' },
@@ -120,6 +168,9 @@ export const products = [
     name: 'Waterproof Hiking Backpack 40L',
     category: 'Backpacks',
     price: 3500,
+    originalPrice: 4500,
+    discount: 22,
+    badge: 'Sale',
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800',
     description: 'Durable waterproof backpack perfect for trekking and outdoor adventures.',
     fullDescription: 'This 40L waterproof hiking backpack features multiple compartments, padded shoulder straps, and a rain cover. Made with tear-resistant material and designed for comfort during long treks.',
@@ -130,6 +181,12 @@ export const products = [
       waterproof: 'Yes',
       warranty: '2 Years'
     },
+    colors: [
+      { name: 'Black', hex: '#000000' },
+      { name: 'Navy', hex: '#1E40AF' },
+      { name: 'Forest Green', hex: '#166534' }
+    ],
+    sizes: ['S', 'M', 'L'],
     stock: 25,
     rating: 4.5,
     reviews: 128
@@ -140,6 +197,9 @@ export const products = [
     name: 'Camping Tent (4 Person)',
     category: 'Camping',
     price: 8500,
+    originalPrice: 8500,
+    discount: 0,
+    badge: null,
     image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800',
     description: 'Spacious 4-person tent with easy setup and weather protection.',
     fullDescription: 'Premium quality camping tent with double-layer construction for weather protection. Features mesh windows for ventilation, easy pole setup, and a waterproof rainfly.',
@@ -150,6 +210,11 @@ export const products = [
       waterproof: 'Yes (3000mm)',
       setup: 'Easy pole system'
     },
+    colors: [
+      { name: 'Orange', hex: '#F59E0B' },
+      { name: 'Blue', hex: '#3B82F6' }
+    ],
+    sizes: ['One Size'],
     stock: 15,
     rating: 4.7,
     reviews: 89
@@ -160,6 +225,9 @@ export const products = [
     name: 'Adjustable Trekking Poles (Pair)',
     category: 'Trekking Gear',
     price: 2200,
+    originalPrice: 2200,
+    discount: 0,
+    badge: 'New Arrival',
     image: 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=800',
     description: 'Lightweight aluminum trekking poles with anti-shock technology.',
     fullDescription: 'Adjustable trekking poles with comfortable cork grips, tungsten carbide tips, and anti-shock springs. Perfect for reducing strain on knees during hikes.',
@@ -170,6 +238,11 @@ export const products = [
       grip: 'Cork',
       tips: 'Tungsten Carbide'
     },
+    colors: [
+      { name: 'Silver', hex: '#9CA3AF' },
+      { name: 'Black', hex: '#000000' }
+    ],
+    sizes: ['Adjustable'],
     stock: 40,
     rating: 4.3,
     reviews: 156

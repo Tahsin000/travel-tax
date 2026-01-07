@@ -1,34 +1,102 @@
 <template>
     <div>
-        <!-- Hero Section -->
-        <div
-            class="relative h-[600px] bg-gradient-to-r from-primary-900 to-primary-700 text-white"
-        >
-            <div class="absolute inset-0 bg-black opacity-20"></div>
+        <!-- Hero Section with Background Image -->
+        <div class="relative h-[700px] overflow-hidden">
+            <!-- Background Image -->
+            <div
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+                style="
+                    background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');
+                "
+            ></div>
+            <!-- Overlay -->
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40"
+            ></div>
+
+            <!-- Hero Content -->
             <div
                 class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center"
             >
-                <div class="max-w-2xl">
-                    <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                        Discover Bangladesh's Hidden Gems
+                <div class="max-w-3xl">
+                    <h1
+                        class="text-6xl md:text-7xl font-bold mb-6 text-white leading-tight"
+                    >
+                        Explore the Unseen
                     </h1>
-                    <p class="text-xl mb-8 text-gray-100">
-                        Expertly curated tours and premium travel gear for your
-                        next adventure
+                    <p class="text-xl md:text-2xl mb-8 text-gray-100">
+                        Discover Bangladesh's hidden treasures and embark on
+                        unforgettable adventures
                     </p>
                     <div class="flex flex-wrap gap-4">
                         <router-link
                             to="/events"
-                            class="bg-secondary-500 text-white px-8 py-4 rounded-lg hover:bg-secondary-600 transition-colors font-semibold text-lg"
+                            class="bg-secondary-500 text-white px-10 py-4 rounded-lg hover:bg-secondary-600 transition-all hover:scale-105 font-semibold text-lg shadow-xl"
                         >
-                            Explore Tours
+                            Start Your Journey
                         </router-link>
                         <router-link
                             to="/shop"
-                            class="bg-white text-primary-900 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg"
+                            class="bg-white/10 backdrop-blur-sm border-2 border-white text-white px-10 py-4 rounded-lg hover:bg-white hover:text-primary-900 transition-all font-semibold text-lg"
                         >
                             Shop Gear
                         </router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Section -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Explore by Category
+                </h2>
+                <p class="text-lg text-gray-600">Choose your adventure style</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div
+                    v-for="category in categories"
+                    :key="category.id"
+                    class="group relative h-80 rounded-2xl overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300"
+                    @click="$router.push(category.link)"
+                >
+                    <!-- Background Image with Zoom Effect -->
+                    <div
+                        class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                        :style="`background-image: url('${category.image}')`"
+                    ></div>
+
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+                    ></div>
+
+                    <!-- Content -->
+                    <div class="relative h-full flex flex-col justify-end p-6">
+                        <div
+                            class="transform transition-transform duration-300 group-hover:-translate-y-2"
+                        >
+                            <component
+                                :is="category.icon"
+                                class="h-10 w-10 text-white mb-3"
+                            />
+                            <h3 class="text-2xl font-bold text-white mb-2">
+                                {{ category.name }}
+                            </h3>
+                            <p class="text-gray-200 text-sm mb-3">
+                                {{ category.description }}
+                            </p>
+                            <div
+                                class="flex items-center text-secondary-400 font-medium"
+                            >
+                                <span>Explore</span>
+                                <ArrowRight
+                                    class="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-2"
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,11 +220,56 @@
 </template>
 
 <script setup>
-import { MapPin, Shield, ShoppingBag } from "lucide-vue-next";
+import {
+    ArrowRight,
+    Camera,
+    MapPin,
+    Mountain,
+    Shield,
+    ShoppingBag,
+    Tent,
+    Waves,
+} from "lucide-vue-next";
 import { computed } from "vue";
 import { events } from "../data/mockData";
 
 const featuredEvents = computed(() => events.slice(0, 3));
+
+// Category data for FE_02
+const categories = [
+    {
+        id: 1,
+        name: "Trekking",
+        description: "Conquer peaks and mountain trails",
+        image: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=800&q=80",
+        icon: Mountain,
+        link: "/events",
+    },
+    {
+        id: 2,
+        name: "Camping",
+        description: "Sleep under the stars",
+        image: "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=800&q=80",
+        icon: Tent,
+        link: "/events",
+    },
+    {
+        id: 3,
+        name: "Beach Tours",
+        description: "Relax by pristine coastlines",
+        image: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+        icon: Waves,
+        link: "/events",
+    },
+    {
+        id: 4,
+        name: "Photography",
+        description: "Capture breathtaking moments",
+        image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80",
+        icon: Camera,
+        link: "/events",
+    },
+];
 </script>
 
 <style scoped>
@@ -202,6 +315,10 @@ const featuredEvents = computed(() => events.slice(0, 3));
 
 .bg-secondary-600 {
     background-color: #d97706;
+}
+
+.text-secondary-400 {
+    color: #fbbf24;
 }
 
 .text-secondary-600 {

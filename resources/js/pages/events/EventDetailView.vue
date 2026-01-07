@@ -96,9 +96,56 @@
                 <div class="bg-white rounded-xl shadow-lg p-6 sticky top-24">
                     <div class="mb-6">
                         <div class="text-3xl font-bold text-primary-600 mb-1">
-                            ৳{{ event.price.toLocaleString() }}
+                            ৳{{ selectedPackagePrice.toLocaleString() }}
                         </div>
                         <p class="text-sm text-gray-500">per person</p>
+                    </div>
+
+                    <!-- Package Selection (FE_04) -->
+                    <div class="mb-6">
+                        <label
+                            class="block text-sm font-medium text-gray-700 mb-3"
+                        >
+                            Select Package
+                        </label>
+                        <div class="space-y-3">
+                            <label
+                                v-for="pkg in event.packages"
+                                :key="pkg.id"
+                                class="flex items-start p-4 border-2 rounded-lg cursor-pointer transition-all"
+                                :class="
+                                    selectedPackage === pkg.id
+                                        ? 'border-primary-600 bg-primary-50'
+                                        : 'border-gray-200 hover:border-primary-300'
+                                "
+                            >
+                                <input
+                                    type="radio"
+                                    :value="pkg.id"
+                                    v-model="selectedPackage"
+                                    class="mt-1 text-primary-600 focus:ring-primary-500"
+                                />
+                                <div class="ml-3 flex-1">
+                                    <div
+                                        class="flex items-center justify-between"
+                                    >
+                                        <span
+                                            class="font-semibold text-gray-900"
+                                            >{{ pkg.name }}</span
+                                        >
+                                        <span
+                                            class="text-sm font-bold text-primary-600"
+                                            >৳{{
+                                                pkg.price.toLocaleString()
+                                            }}</span
+                                        >
+                                    </div>
+                                    <p class="text-xs text-gray-600 mt-1">
+                                        {{ pkg.description }}
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Booking Form -->
@@ -191,7 +238,7 @@ import {
     MapPin,
     Users,
 } from "lucide-vue-next";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { events } from "../../data/mockData";
 
@@ -202,6 +249,17 @@ const event = computed(() => {
     return events.find((e) => e.slug === route.params.slug);
 });
 
+// Package selection (FE_04)
+const selectedPackage = ref("economy");
+
+const selectedPackagePrice = computed(() => {
+    if (!event.value || !event.value.packages) return event.value?.price || 0;
+    const pkg = event.value.packages.find(
+        (p) => p.id === selectedPackage.value
+    );
+    return pkg ? pkg.price : event.value.price;
+});
+
 const bookNow = () => {
     // Navigate to checkout with event info
     router.push("/checkout");
@@ -209,6 +267,10 @@ const bookNow = () => {
 </script>
 
 <style scoped>
+.bg-primary-50 {
+    background-color: #eff6ff;
+}
+
 .bg-primary-100 {
     background-color: #dbeafe;
 }
