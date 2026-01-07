@@ -25,7 +25,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="budget"
+                                    v-model="selectedBudgets"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Budget (< ৳10,000)</span
@@ -34,7 +36,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="mid"
+                                    v-model="selectedBudgets"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Mid-Range (৳10k-20k)</span
@@ -43,7 +47,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="premium"
+                                    v-model="selectedBudgets"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Premium (> ৳20,000)</span
@@ -61,7 +67,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="1-2"
+                                    v-model="selectedDurations"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >1-2 Days</span
@@ -70,7 +78,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="3-4"
+                                    v-model="selectedDurations"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >3-4 Days</span
@@ -79,7 +89,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="5+"
+                                    v-model="selectedDurations"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >5+ Days</span
@@ -95,7 +107,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="coastal"
+                                    v-model="selectedRegions"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Coastal</span
@@ -104,7 +118,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="hill"
+                                    v-model="selectedRegions"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Hill</span
@@ -113,7 +129,9 @@
                             <label class="flex items-center">
                                 <input
                                     type="checkbox"
-                                    class="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                                    value="forest"
+                                    v-model="selectedRegions"
+                                    class="rounded border-gray-300 text-royal-600 focus:ring-royal-500"
                                 />
                                 <span class="ml-2 text-sm text-gray-600"
                                     >Forest</span
@@ -129,9 +147,10 @@
                 <!-- Search Bar -->
                 <div class="mb-6">
                     <input
+                        v-model="searchQuery"
                         type="text"
                         placeholder="Search tours..."
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                     />
                 </div>
 
@@ -140,7 +159,7 @@
                     class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
                     <div
-                        v-for="event in events"
+                        v-for="event in filteredEvents"
                         :key="event.id"
                         class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group"
                         @click="navigateToEvent(event.slug)"
@@ -204,7 +223,10 @@
                 </div>
 
                 <!-- Empty State -->
-                <div v-if="events.length === 0" class="text-center py-16">
+                <div
+                    v-if="filteredEvents.length === 0"
+                    class="text-center py-16"
+                >
                     <Compass class="h-16 w-16 text-gray-400 mx-auto mb-4" />
                     <h3 class="text-xl font-semibold text-gray-700 mb-2">
                         No tours found
@@ -218,10 +240,90 @@
 
 <script setup>
 import { AlertCircle, Calendar, Clock, Compass } from "lucide-vue-next";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { events } from "../../data/mockData";
 
 const router = useRouter();
+
+// Search and filter state
+const searchQuery = ref("");
+const selectedBudgets = ref([]);
+const selectedDurations = ref([]);
+const selectedRegions = ref([]);
+
+// Computed filtered events
+const filteredEvents = computed(() => {
+    let result = [...events];
+
+    // Apply search filter
+    if (searchQuery.value.trim()) {
+        const query = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (event) =>
+                event.title.toLowerCase().includes(query) ||
+                event.description.toLowerCase().includes(query) ||
+                event.location.toLowerCase().includes(query)
+        );
+    }
+
+    // Apply budget filters
+    if (selectedBudgets.value.length > 0) {
+        result = result.filter((event) => {
+            const price = event.price;
+            return selectedBudgets.value.some((budget) => {
+                if (budget === "budget") return price < 10000;
+                if (budget === "mid") return price >= 10000 && price <= 20000;
+                if (budget === "premium") return price > 20000;
+                return false;
+            });
+        });
+    }
+
+    // Apply duration filters
+    if (selectedDurations.value.length > 0) {
+        result = result.filter((event) => {
+            const duration = event.duration.toLowerCase();
+            return selectedDurations.value.some((dur) => {
+                if (dur === "1-2")
+                    return duration.includes("1") || duration.includes("2");
+                if (dur === "3-4")
+                    return duration.includes("3") || duration.includes("4");
+                if (dur === "5+") return parseInt(duration) >= 5;
+                return false;
+            });
+        });
+    }
+
+    // Apply region filters
+    if (selectedRegions.value.length > 0) {
+        result = result.filter((event) => {
+            const location = event.location.toLowerCase();
+            return selectedRegions.value.some((region) => {
+                if (region === "coastal")
+                    return (
+                        location.includes("cox") ||
+                        location.includes("beach") ||
+                        location.includes("coastal")
+                    );
+                if (region === "hill")
+                    return (
+                        location.includes("bandarban") ||
+                        location.includes("hill") ||
+                        location.includes("rangamati")
+                    );
+                if (region === "forest")
+                    return (
+                        location.includes("sundarbans") ||
+                        location.includes("forest")
+                    );
+                return false;
+            });
+        });
+    }
+
+    return result;
+});
 
 const navigateToEvent = (slug) => {
     router.push(`/events/${slug}`);

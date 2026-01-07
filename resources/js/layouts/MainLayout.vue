@@ -1,13 +1,21 @@
 <template>
     <div class="min-h-screen flex flex-col bg-neutral-50">
         <!-- Navbar -->
-        <nav class="bg-white shadow-md sticky top-0 z-50">
+        <nav
+            class="bg-white shadow-luxury sticky top-0 z-50 border-b border-royal-100"
+        >
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <!-- Logo -->
-                    <router-link to="/" class="flex items-center space-x-2">
-                        <Mountain class="h-8 w-8 text-primary-600" />
-                        <span class="text-xl font-bold text-primary-900"
+                    <router-link
+                        to="/"
+                        class="flex items-center space-x-2 group"
+                    >
+                        <Mountain
+                            class="h-8 w-8 text-royal-600 group-hover:text-gold-500 transition-colors"
+                        />
+                        <span
+                            class="text-xl font-display font-bold text-royal-900"
                             >TravelTax</span
                         >
                     </router-link>
@@ -16,62 +24,52 @@
                     <div class="hidden md:flex items-center space-x-8">
                         <router-link
                             to="/"
-                            class="text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                            active-class="text-primary-600"
+                            exact
+                            class="text-gray-700 hover:text-royal-600 transition-colors font-medium"
+                            active-class="text-royal-600 font-semibold"
                         >
                             Home
                         </router-link>
                         <router-link
                             to="/events"
-                            class="text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                            active-class="text-primary-600"
+                            class="text-gray-700 hover:text-royal-600 transition-colors font-medium"
+                            active-class="text-royal-600 font-semibold"
                         >
                             Events
                         </router-link>
                         <router-link
                             to="/shop"
-                            class="text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                            active-class="text-primary-600"
+                            class="text-gray-700 hover:text-royal-600 transition-colors font-medium"
+                            active-class="text-royal-600 font-semibold"
                         >
                             Shop
                         </router-link>
                         <router-link
                             to="/about"
-                            class="text-gray-700 hover:text-primary-600 transition-colors font-medium"
-                            active-class="text-primary-600"
+                            class="text-gray-700 hover:text-royal-600 transition-colors font-medium"
+                            active-class="text-royal-600 font-semibold"
                         >
                             About
                         </router-link>
-                        <a
-                            href="#contact"
-                            class="text-gray-700 hover:text-primary-600 transition-colors font-medium"
+                        <router-link
+                            to="/contact"
+                            class="text-gray-700 hover:text-royal-600 transition-colors font-medium"
+                            active-class="text-royal-600 font-semibold"
                         >
                             Contact
-                        </a>
+                        </router-link>
                     </div>
 
-                    <!-- Search & Actions -->
+                    <!-- Actions (removed search) -->
                     <div class="hidden md:flex items-center space-x-4">
-                        <!-- Search Bar -->
-                        <div class="relative">
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent w-64"
-                            />
-                            <Search
-                                class="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400"
-                            />
-                        </div>
-
                         <!-- Cart Icon -->
                         <router-link
                             to="/cart"
-                            class="relative p-2 text-gray-700 hover:text-primary-600 transition-colors"
+                            class="relative p-2 text-gray-700 hover:text-royal-600 transition-colors"
                         >
                             <ShoppingCart class="h-6 w-6" />
                             <span
-                                class="absolute -top-1 -right-1 bg-secondary-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                                class="absolute -top-1 -right-1 bg-gold-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold"
                             >
                                 3
                             </span>
@@ -80,7 +78,7 @@
                         <!-- User Menu -->
                         <router-link
                             to="/profile/dashboard"
-                            class="p-2 text-gray-700 hover:text-primary-600 transition-colors"
+                            class="p-2 text-gray-700 hover:text-royal-600 transition-colors"
                         >
                             <User class="h-6 w-6" />
                         </router-link>
@@ -89,7 +87,7 @@
                     <!-- Mobile Menu Button -->
                     <button
                         @click="mobileMenuOpen = !mobileMenuOpen"
-                        class="md:hidden p-2 text-gray-700 hover:text-primary-600 transition-colors"
+                        class="md:hidden p-2 text-gray-700 hover:text-royal-600 transition-colors"
                     >
                         <Menu v-if="!mobileMenuOpen" class="h-6 w-6" />
                         <X v-else class="h-6 w-6" />
@@ -97,62 +95,99 @@
                 </div>
             </div>
 
-            <!-- Mobile Menu -->
+            <!-- Mobile Sidebar -->
+            <!-- Overlay -->
             <div
                 v-if="mobileMenuOpen"
-                class="md:hidden border-t border-gray-200 bg-white"
+                @click="mobileMenuOpen = false"
+                class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden transition-opacity"
+            ></div>
+            <!-- Sidebar -->
+            <div
+                :class="mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'"
+                class="fixed top-0 right-0 h-full w-80 bg-white shadow-luxury-lg z-50 md:hidden transition-transform duration-300 ease-in-out"
             >
-                <div class="px-4 py-4 space-y-3">
-                    <router-link
-                        to="/"
-                        class="block text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
-                        @click="mobileMenuOpen = false"
+                <div class="flex flex-col h-full">
+                    <!-- Sidebar Header -->
+                    <div
+                        class="flex items-center justify-between p-6 border-b border-royal-100 bg-gradient-royal"
                     >
-                        Home
-                    </router-link>
-                    <router-link
-                        to="/events"
-                        class="block text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
-                        @click="mobileMenuOpen = false"
-                    >
-                        Events
-                    </router-link>
-                    <router-link
-                        to="/shop"
-                        class="block text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
-                        @click="mobileMenuOpen = false"
-                    >
-                        Shop
-                    </router-link>
-                    <router-link
-                        to="/about"
-                        class="block text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
-                        @click="mobileMenuOpen = false"
-                    >
-                        About
-                    </router-link>
-                    <a
-                        href="#contact"
-                        class="block text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
-                        @click="mobileMenuOpen = false"
-                    >
-                        Contact
-                    </a>
-                    <div class="pt-3 border-t border-gray-200 space-y-3">
+                        <div class="flex items-center space-x-2">
+                            <Mountain class="h-8 w-8 text-gold-400" />
+                            <span
+                                class="text-xl font-display font-bold text-white"
+                                >TravelTax</span
+                            >
+                        </div>
+                        <button
+                            @click="mobileMenuOpen = false"
+                            class="p-2 text-white hover:bg-white/20 rounded-lg transition-colors"
+                        >
+                            <X class="h-6 w-6" />
+                        </button>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <nav class="flex-1 overflow-y-auto p-6 space-y-2">
                         <router-link
-                            to="/cart"
-                            class="flex items-center text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
+                            to="/"
+                            exact
+                            class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            active-class="bg-gradient-royal text-white font-semibold"
                             @click="mobileMenuOpen = false"
                         >
-                            <ShoppingCart class="h-5 w-5 mr-2" />
+                            Home
+                        </router-link>
+                        <router-link
+                            to="/events"
+                            class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            active-class="bg-gradient-royal text-white font-semibold"
+                            @click="mobileMenuOpen = false"
+                        >
+                            Events
+                        </router-link>
+                        <router-link
+                            to="/shop"
+                            class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            active-class="bg-gradient-royal text-white font-semibold"
+                            @click="mobileMenuOpen = false"
+                        >
+                            Shop
+                        </router-link>
+                        <router-link
+                            to="/about"
+                            class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            active-class="bg-gradient-royal text-white font-semibold"
+                            @click="mobileMenuOpen = false"
+                        >
+                            About
+                        </router-link>
+                        <router-link
+                            to="/contact"
+                            class="block px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            active-class="bg-gradient-royal text-white font-semibold"
+                            @click="mobileMenuOpen = false"
+                        >
+                            Contact
+                        </router-link>
+                    </nav>
+
+                    <!-- Sidebar Footer -->
+                    <div class="p-6 border-t border-royal-100 space-y-2">
+                        <router-link
+                            to="/cart"
+                            class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
+                            @click="mobileMenuOpen = false"
+                        >
+                            <ShoppingCart class="h-5 w-5 mr-3" />
                             Cart (3)
                         </router-link>
                         <router-link
                             to="/profile/dashboard"
-                            class="flex items-center text-gray-700 hover:text-primary-600 transition-colors font-medium py-2"
+                            class="flex items-center px-4 py-3 rounded-lg text-gray-700 hover:bg-royal-50 hover:text-royal-600 transition-all font-medium"
                             @click="mobileMenuOpen = false"
                         >
-                            <User class="h-5 w-5 mr-2" />
+                            <User class="h-5 w-5 mr-3" />
                             Profile
                         </router-link>
                     </div>
@@ -166,16 +201,18 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-primary-900 text-white mt-16">
+        <footer class="bg-gradient-royal text-white mt-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <!-- Brand -->
                     <div class="col-span-1">
                         <div class="flex items-center space-x-2 mb-4">
-                            <Mountain class="h-8 w-8 text-secondary-400" />
-                            <span class="text-xl font-bold">TravelTax</span>
+                            <Mountain class="h-8 w-8 text-gold-400" />
+                            <span class="text-xl font-display font-bold"
+                                >TravelTax</span
+                            >
                         </div>
-                        <p class="text-gray-300 text-sm">
+                        <p class="text-cream-100 text-sm">
                             Discover Bangladesh's hidden gems with expertly
                             curated tours and premium travel gear.
                         </p>
@@ -183,20 +220,22 @@
 
                     <!-- Quick Links -->
                     <div>
-                        <h3 class="font-semibold text-lg mb-4">Quick Links</h3>
+                        <h3 class="font-display font-semibold text-lg mb-4">
+                            Explore
+                        </h3>
                         <ul class="space-y-2">
                             <li>
                                 <router-link
                                     to="/events"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
-                                    Browse Events
+                                    Browse Tours
                                 </router-link>
                             </li>
                             <li>
                                 <router-link
                                     to="/shop"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
                                     Shop Gear
                                 </router-link>
@@ -204,30 +243,32 @@
                             <li>
                                 <router-link
                                     to="/about"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
                                     About Us
                                 </router-link>
                             </li>
                             <li>
-                                <a
-                                    href="#contact"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                <router-link
+                                    to="/contact"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
                                     Contact
-                                </a>
+                                </router-link>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- Support -->
+                    <!-- Account -->
                     <div>
-                        <h3 class="font-semibold text-lg mb-4">Support</h3>
+                        <h3 class="font-display font-semibold text-lg mb-4">
+                            My Account
+                        </h3>
                         <ul class="space-y-2">
                             <li>
                                 <router-link
                                     to="/profile/bookings"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
                                     My Bookings
                                 </router-link>
@@ -235,83 +276,52 @@
                             <li>
                                 <router-link
                                     to="/profile/orders"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
                                     My Orders
                                 </router-link>
                             </li>
                             <li>
-                                <a
-                                    href="#faq"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
+                                <router-link
+                                    to="/profile/settings"
+                                    class="text-cream-100 hover:text-gold-400 transition-colors text-sm"
                                 >
-                                    FAQ
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#help"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
-                                >
-                                    Help Center
-                                </a>
+                                    Settings
+                                </router-link>
                             </li>
                         </ul>
                     </div>
 
-                    <!-- Legal & Social -->
+                    <!-- Social -->
                     <div>
-                        <h3 class="font-semibold text-lg mb-4">Legal</h3>
-                        <ul class="space-y-2 mb-6">
-                            <li>
-                                <a
-                                    href="#privacy"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
-                                >
-                                    Privacy Policy
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#terms"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
-                                >
-                                    Terms of Service
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#refund"
-                                    class="text-gray-300 hover:text-secondary-400 transition-colors text-sm"
-                                >
-                                    Refund Policy
-                                </a>
-                            </li>
-                        </ul>
-
-                        <!-- Social Media -->
+                        <h3 class="font-display font-semibold text-lg mb-4">
+                            Connect
+                        </h3>
+                        <p class="text-cream-100 text-sm mb-4">
+                            Follow us for travel inspiration
+                        </p>
                         <div class="flex space-x-4">
                             <a
                                 href="#facebook"
-                                class="text-gray-300 hover:text-secondary-400 transition-colors"
+                                class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center text-cream-100 hover:bg-gold-500 hover:text-white transition-all"
                             >
                                 <Facebook class="h-5 w-5" />
                             </a>
                             <a
                                 href="#instagram"
-                                class="text-gray-300 hover:text-secondary-400 transition-colors"
+                                class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center text-cream-100 hover:bg-gold-500 hover:text-white transition-all"
                             >
                                 <Instagram class="h-5 w-5" />
                             </a>
                             <a
                                 href="#twitter"
-                                class="text-gray-300 hover:text-secondary-400 transition-colors"
+                                class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center text-cream-100 hover:bg-gold-500 hover:text-white transition-all"
                             >
                                 <Twitter class="h-5 w-5" />
                             </a>
                             <a
                                 href="#youtube"
-                                class="text-gray-300 hover:text-secondary-400 transition-colors"
+                                class="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center text-cream-100 hover:bg-gold-500 hover:text-white transition-all"
                             >
                                 <Youtube class="h-5 w-5" />
                             </a>
@@ -320,8 +330,8 @@
                 </div>
 
                 <!-- Copyright -->
-                <div class="border-t border-primary-800 mt-8 pt-8 text-center">
-                    <p class="text-gray-400 text-sm">
+                <div class="border-t border-white/20 mt-8 pt-8 text-center">
+                    <p class="text-cream-100 text-sm">
                         © 2026 TravelTax. All rights reserved. Made with ❤️ in
                         Bangladesh
                     </p>
@@ -337,7 +347,6 @@ import {
     Instagram,
     Menu,
     Mountain,
-    Search,
     ShoppingCart,
     Twitter,
     User,
@@ -350,45 +359,73 @@ const mobileMenuOpen = ref(false);
 </script>
 
 <style scoped>
-/* Custom color classes using the specified palette */
-.text-primary-600 {
-    color: #1e40af;
+/* Luxury theme colors */
+.bg-gradient-royal {
+    background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%);
 }
 
-.text-primary-900 {
-    color: #1e3a8a;
+.shadow-luxury {
+    box-shadow: 0 10px 40px rgba(74, 20, 140, 0.2);
 }
 
-.bg-primary-900 {
-    background-color: #1e3a8a;
+.shadow-luxury-lg {
+    box-shadow: 0 20px 60px rgba(74, 20, 140, 0.3);
 }
 
-.bg-primary-800 {
-    background-color: #1e40af;
+.text-royal-600 {
+    color: #8e24aa;
 }
 
-.text-secondary-400 {
-    color: #f59e0b;
+.text-royal-900 {
+    color: #4a148c;
 }
 
-.text-secondary-500 {
-    color: #f59e0b;
+.text-gold-400 {
+    color: #e9d087;
 }
 
-.bg-secondary-500 {
-    background-color: #f59e0b;
+.text-gold-500 {
+    color: #d4af37;
 }
 
-.hover\:text-primary-600:hover {
-    color: #1e40af;
+.text-cream-100 {
+    color: #fdfbf7;
 }
 
-.hover\:text-secondary-400:hover {
-    color: #f59e0b;
+.bg-royal-50 {
+    background-color: #f3e5f5;
 }
 
-.focus\:ring-primary-500:focus {
-    --tw-ring-color: #1e40af;
+.bg-royal-100 {
+    background-color: #e1bee7;
+}
+
+.bg-gold-500 {
+    background-color: #d4af37;
+}
+
+.border-royal-100 {
+    border-color: #e1bee7;
+}
+
+.hover\:text-royal-600:hover {
+    color: #8e24aa;
+}
+
+.hover\:text-gold-400:hover {
+    color: #e9d087;
+}
+
+.hover\:text-gold-500:hover {
+    color: #d4af37;
+}
+
+.hover\:bg-royal-50:hover {
+    background-color: #f3e5f5;
+}
+
+.hover\:bg-gold-500:hover {
+    background-color: #d4af37;
 }
 
 .bg-neutral-50 {

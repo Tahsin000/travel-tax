@@ -67,6 +67,11 @@ const routes = [
         name: 'about',
         component: About
       },
+      {
+        path: 'contact',
+        name: 'contact',
+        component: () => import('../pages/Contact.vue')
+      },
       // Events Module (ROUT_02)
       {
         path: 'events',

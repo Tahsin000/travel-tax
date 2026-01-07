@@ -52,107 +52,88 @@
                 Billing Information
             </h2>
             <form @submit.prevent="nextStep" class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 mb-2"
-                            >First Name</label
-                        >
-                        <input
-                            v-model="form.firstName"
-                            type="text"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                        />
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 mb-2"
-                            >Last Name</label
-                        >
-                        <input
-                            v-model="form.lastName"
-                            type="text"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-                        />
-                    </div>
-                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2"
-                        >Email</label
+                        >Name *</label
                     >
                     <input
-                        v-model="form.email"
-                        type="email"
+                        v-model="form.name"
+                        type="text"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                     />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2"
-                        >Phone</label
+                        >Email (Optional)</label
+                    >
+                    <input
+                        v-model="form.email"
+                        type="email"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
+                    />
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2"
+                        >Phone *</label
                     >
                     <input
                         v-model="form.phone"
                         type="tel"
                         required
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                     />
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2"
-                        >Address</label
+                        >Address *</label
                     >
                     <textarea
                         v-model="form.address"
                         required
                         rows="3"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                     ></textarea>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label
                             class="block text-sm font-medium text-gray-700 mb-2"
-                            >City</label
+                            >City (Optional)</label
                         >
                         <input
                             v-model="form.city"
                             type="text"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                         />
                     </div>
                     <div>
                         <label
                             class="block text-sm font-medium text-gray-700 mb-2"
-                            >State/Division</label
+                            >District (Optional)</label
                         >
                         <input
                             v-model="form.state"
                             type="text"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                         />
                     </div>
                     <div>
                         <label
                             class="block text-sm font-medium text-gray-700 mb-2"
-                            >Postal Code</label
+                            >Postcode (Optional)</label
                         >
                         <input
                             v-model="form.postalCode"
                             type="text"
-                            required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                         />
                     </div>
                 </div>
                 <div class="flex justify-end pt-4">
                     <button
                         type="submit"
-                        class="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold"
+                        class="bg-gradient-royal text-white px-8 py-3 rounded-lg hover:shadow-luxury-lg transition-all font-semibold"
                     >
                         Continue to Review
                     </button>
@@ -169,13 +150,22 @@
                     Shipping Address
                 </h3>
                 <div class="bg-gray-50 rounded-lg p-4 text-sm text-gray-700">
-                    <p>{{ form.firstName }} {{ form.lastName }}</p>
+                    <p>{{ form.name }}</p>
                     <p>{{ form.address }}</p>
-                    <p>
-                        {{ form.city }}, {{ form.state }} {{ form.postalCode }}
+                    <p v-if="form.city || form.state || form.postalCode">
+                        <span v-if="form.city">{{ form.city }}</span
+                        ><span
+                            v-if="form.city && (form.state || form.postalCode)"
+                            >,
+                        </span>
+                        <span v-if="form.state">{{ form.state }}</span
+                        ><span v-if="form.state && form.postalCode"> </span>
+                        <span v-if="form.postalCode">{{
+                            form.postalCode
+                        }}</span>
                     </p>
                     <p>{{ form.phone }}</p>
-                    <p>{{ form.email }}</p>
+                    <p v-if="form.email">{{ form.email }}</p>
                 </div>
             </div>
 
@@ -298,8 +288,7 @@ const currentStep = ref(1);
 const paymentMethod = ref("bkash");
 
 const form = ref({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     phone: "",
     address: "",

@@ -10,39 +10,42 @@
             </p>
         </div>
 
-        <!-- Filters (UI Only) -->
+        <!-- Filters (Functional) -->
         <div class="mb-8 flex flex-wrap gap-4">
             <div class="flex-1 min-w-[200px]">
                 <input
+                    v-model="searchQuery"
                     type="text"
                     placeholder="Search products..."
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
                 />
             </div>
             <select
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                v-model="selectedCategory"
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
             >
-                <option>All Categories</option>
-                <option>Backpacks</option>
-                <option>Camping</option>
-                <option>Trekking Gear</option>
-                <option>Hydration</option>
-                <option>Lighting</option>
+                <option value="">All Categories</option>
+                <option value="Backpacks">Backpacks</option>
+                <option value="Camping">Camping</option>
+                <option value="Trekking Gear">Trekking Gear</option>
+                <option value="Hydration">Hydration</option>
+                <option value="Lighting">Lighting</option>
             </select>
             <select
-                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                v-model="sortBy"
+                class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-royal-500"
             >
-                <option>Sort by: Featured</option>
-                <option>Price: Low to High</option>
-                <option>Price: High to Low</option>
-                <option>Rating</option>
+                <option value="featured">Sort by: Featured</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Rating</option>
             </select>
         </div>
 
         <!-- Products Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div
-                v-for="product in products"
+                v-for="product in filteredProducts"
                 :key="product.id"
                 class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer group"
                 @click="navigateToProduct(product.slug)"
@@ -111,7 +114,7 @@
         </div>
 
         <!-- Empty State -->
-        <div v-if="products.length === 0" class="text-center py-16">
+        <div v-if="filteredProducts.length === 0" class="text-center py-16">
             <Package class="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <h3 class="text-xl font-semibold text-gray-700 mb-2">
                 No products found
@@ -123,10 +126,53 @@
 
 <script setup>
 import { Package, Star } from "lucide-vue-next";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { products } from "../../data/mockData";
 
 const router = useRouter();
+
+// Search, filter, and sort state
+const searchQuery = ref("");
+const selectedCategory = ref("");
+const sortBy = ref("featured");
+
+// Computed filtered and sorted products
+const filteredProducts = computed(() => {
+    let result = [...products];
+
+    // Apply search filter
+    if (searchQuery.value.trim()) {
+        const query = searchQuery.value.toLowerCase();
+        result = result.filter(
+            (product) =>
+                product.name.toLowerCase().includes(query) ||
+                product.description.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query)
+        );
+    }
+
+    // Apply category filter
+    if (selectedCategory.value && selectedCategory.value !== "") {
+        result = result.filter(
+            (product) =>
+                product.category.toLowerCase() ===
+                selectedCategory.value.toLowerCase()
+        );
+    }
+
+    // Apply sorting
+    if (sortBy.value === "price-low") {
+        result.sort((a, b) => a.price - b.price);
+    } else if (sortBy.value === "price-high") {
+        result.sort((a, b) => b.price - a.price);
+    } else if (sortBy.value === "rating") {
+        result.sort((a, b) => b.rating - a.rating);
+    }
+    // 'featured' keeps original order
+
+    return result;
+});
 
 const navigateToProduct = (slug) => {
     router.push(`/shop/${slug}`);

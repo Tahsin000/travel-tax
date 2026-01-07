@@ -154,7 +154,9 @@
                     </button>
 
                     <button
-                        class="w-full border-2 border-primary-600 text-primary-600 py-3 rounded-lg hover:bg-primary-50 transition-colors font-semibold"
+                        @click="buyNow"
+                        :disabled="product.stock === 0"
+                        class="w-full border-2 border-royal-600 text-royal-600 py-3 rounded-lg hover:bg-royal-50 transition-colors font-semibold disabled:border-gray-300 disabled:text-gray-300 disabled:cursor-not-allowed"
                     >
                         Buy Now
                     </button>
@@ -250,6 +252,13 @@ const product = computed(() => {
 const addToCart = () => {
     // TODO: Integrate with cart store
     alert(`Added ${quantity.value} x ${product.value.name} to cart!`);
+    // Navigate to cart
+    router.push("/cart");
+};
+
+const buyNow = () => {
+    // Navigate directly to checkout
+    router.push("/checkout");
 };
 </script>
 
