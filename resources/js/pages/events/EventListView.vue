@@ -242,9 +242,39 @@
 import { AlertCircle, Calendar, Clock, Compass } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSEO } from "../../composables/useSEO";
 import { events } from "../../data/mockData";
 
 const router = useRouter();
+
+// SEO Configuration
+useSEO({
+    title: "Travel Tours & Events in Bangladesh | TravelTax",
+    description:
+        "Browse premium travel tours across Bangladesh. Trekking, camping, beach tours, and photography expeditions. Book your adventure today.",
+    keywords:
+        "bangladesh tours, travel events, trekking tours, camping trips, adventure tours, cox's bazar tours, bandarban trekking",
+    image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&h=630&fit=crop",
+    type: "website",
+    structuredData: {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Travel Tours in Bangladesh",
+        description: "Curated list of premium travel tours and events",
+        itemListElement: events.slice(0, 10).map((event, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+                "@type": "Event",
+                name: event.title,
+                description: event.description,
+                image: event.image,
+                url: `https://traveltax.com/events/${event.slug}`,
+            },
+        })),
+    },
+});
+
 
 // Search and filter state
 const searchQuery = ref("");

@@ -268,7 +268,6 @@
 
 <script setup>
 import {
-    Clock,
     Facebook,
     Instagram,
     Mail,
@@ -278,6 +277,53 @@ import {
     Youtube,
 } from "lucide-vue-next";
 import { ref } from "vue";
+import { useSEO } from "../composables/useSEO";
+
+// SEO Configuration
+useSEO({
+    title: "Contact TravelTax - Get in Touch for Your Next Adventure",
+    description:
+        "Contact TravelTax for tour inquiries, booking assistance, or travel questions. Available Mon-Sat, 9 AM - 6 PM. Phone: +880 1712-345678. Email: info@traveltax.com",
+    keywords:
+        "contact traveltax, travel inquiry, book tour, travel assistance bangladesh, customer support",
+    image: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1200&h=630&fit=crop",
+    type: "website",
+    structuredData: {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        name: "Contact TravelTax",
+        description:
+            "Get in touch with TravelTax for tour bookings and inquiries",
+        url: "https://traveltax.com/contact",
+        mainEntity: {
+            "@type": "LocalBusiness",
+            name: "TravelTax",
+            image: "https://traveltax.com/logo.png",
+            telephone: "+880-1712-345678",
+            email: "info@traveltax.com",
+            address: {
+                "@type": "PostalAddress",
+                streetAddress: "123 Travel Street, Gulshan",
+                addressLocality: "Dhaka",
+                postalCode: "1212",
+                addressCountry: "BD",
+            },
+            openingHoursSpecification: {
+                "@type": "OpeningHoursSpecification",
+                dayOfWeek: [
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                ],
+                opens: "09:00",
+                closes: "18:00",
+            },
+        },
+    },
+});
 
 const form = ref({
     name: "",

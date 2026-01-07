@@ -231,8 +231,13 @@ import {
     Star,
     Truck,
 } from "lucide-vue-next";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router";
+import {
+    getBreadcrumbSchema,
+    getProductSchema,
+    useSEO,
+} from "../../composables/useSEO";
 import { products } from "../../data/mockData";
 
 const props = defineProps({
@@ -248,6 +253,41 @@ const quantity = ref(1);
 const product = computed(() => {
     return products.find((p) => p.slug === props.productSlug);
 });
+
+// Dynamic SEO based on product data
+watch(
+    product,
+    (currentProduct) => {
+        if (currentProduct) {
+            useSEO({
+                title: `${
+                    currentProduct.name
+                } - ৳${currentProduct.price.toLocaleString()} | TravelTax Shop`,
+                description: currentProduct.description,
+                keywords: `${currentProduct.name}, ${
+                    currentProduct.category
+                }, travel gear, ${currentProduct.brand || "outdoor equipment"}`,
+                image: currentProduct.image,
+                type: "product",
+                structuredData: {
+                    "@context": "https://schema.org",
+                    "@graph": [
+                        getProductSchema(currentProduct),
+                        getBreadcrumbSchema([
+                            { name: "Home", url: "https://traveltax.com" },
+                            { name: "Shop", url: "https://traveltax.com/shop" },
+                            {
+                                name: currentProduct.name,
+                                url: `https://traveltax.com/shop/${currentProduct.slug}`,
+                            },
+                        ]),
+                    ],
+                },
+            });
+        }
+    },
+    { immediate: true }
+);
 
 const addToCart = () => {
     // TODO: Integrate with cart store

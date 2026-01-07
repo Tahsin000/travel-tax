@@ -128,9 +128,38 @@
 import { Package, Star } from "lucide-vue-next";
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import { useSEO } from "../../composables/useSEO";
 import { products } from "../../data/mockData";
 
 const router = useRouter();
+
+// SEO Configuration
+useSEO({
+    title: "Travel Gear Shop - Premium Equipment for Adventures | TravelTax",
+    description:
+        "Shop premium travel gear, backpacks, camping equipment, and trekking essentials. Quality products for every adventure in Bangladesh.",
+    keywords:
+        "travel gear, backpacks, camping equipment, trekking gear, outdoor equipment, adventure gear bangladesh",
+    image: "https://images.unsplash.com/photo-1622260614153-03223fb72052?w=1200&h=630&fit=crop",
+    type: "website",
+    structuredData: {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Travel Gear Products",
+        description: "Premium travel and outdoor equipment",
+        itemListElement: products.slice(0, 10).map((product, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            item: {
+                "@type": "Product",
+                name: product.name,
+                description: product.description,
+                image: product.image,
+                url: `https://traveltax.com/shop/${product.slug}`,
+            },
+        })),
+    },
+});
 
 // Search, filter, and sort state
 const searchQuery = ref("");

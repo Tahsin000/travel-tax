@@ -1,2 +1,18 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Disallow admin and user profile pages
+Disallow: /admin/
+Disallow: /profile/
+Disallow: /cart
+Disallow: /checkout
+
+# Allow all bots to access events and shop
+Allow: /events/
+Allow: /shop/
+Allow: /about
+Allow: /contact
+
+# Sitemap location
+Sitemap: https://traveltax.com/sitemap.xml
+

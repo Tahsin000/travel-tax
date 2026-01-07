@@ -238,8 +238,13 @@ import {
     MapPin,
     Users,
 } from "lucide-vue-next";
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {
+    getBreadcrumbSchema,
+    getEventSchema,
+    useSEO,
+} from "../../composables/useSEO";
 import { events } from "../../data/mockData";
 
 const route = useRoute();
@@ -248,6 +253,40 @@ const router = useRouter();
 const event = computed(() => {
     return events.find((e) => e.slug === route.params.slug);
 });
+
+// Dynamic SEO based on event data
+watch(
+    event,
+    (currentEvent) => {
+        if (currentEvent) {
+            useSEO({
+                title: `${currentEvent.title} - ${currentEvent.duration} Tour | TravelTax`,
+                description: currentEvent.description.substring(0, 155) + "...",
+                keywords: `${currentEvent.title}, ${currentEvent.location}, ${currentEvent.category}, bangladesh tour, travel`,
+                image: currentEvent.image,
+                type: "article",
+                structuredData: {
+                    "@context": "https://schema.org",
+                    "@graph": [
+                        getEventSchema(currentEvent),
+                        getBreadcrumbSchema([
+                            { name: "Home", url: "https://traveltax.com" },
+                            {
+                                name: "Events",
+                                url: "https://traveltax.com/events",
+                            },
+                            {
+                                name: currentEvent.title,
+                                url: `https://traveltax.com/events/${currentEvent.slug}`,
+                            },
+                        ]),
+                    ],
+                },
+            });
+        }
+    },
+    { immediate: true }
+);
 
 // Package selection (FE_04)
 const selectedPackage = ref("economy");

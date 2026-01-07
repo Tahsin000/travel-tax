@@ -231,7 +231,38 @@ import {
     Waves,
 } from "lucide-vue-next";
 import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { getOrganizationSchema, useSEO } from "../composables/useSEO";
 import { events } from "../data/mockData";
+
+const router = useRouter();
+
+// SEO Configuration
+useSEO({
+    title: "TravelTax - Discover Bangladesh's Hidden Treasures | Premium Travel Tours",
+    description:
+        "Explore Bangladesh with TravelTax. Curated luxury tours, premium travel gear, and unforgettable adventures. Book your next journey today.",
+    keywords:
+        "travel bangladesh, tours, adventure, trekking, camping, travel gear, cox's bazar, bandarban, sundarbans, luxury tours",
+    image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=630&fit=crop",
+    type: "website",
+    structuredData: {
+        "@context": "https://schema.org",
+        "@graph": [
+            getOrganizationSchema(),
+            {
+                "@type": "WebSite",
+                name: "TravelTax",
+                url: "https://traveltax.com",
+                potentialAction: {
+                    "@type": "SearchAction",
+                    target: "https://traveltax.com/search?q={search_term_string}",
+                    "query-input": "required name=search_term_string",
+                },
+            },
+        ],
+    },
+});
 
 const featuredEvents = computed(() => events.slice(0, 3));
 

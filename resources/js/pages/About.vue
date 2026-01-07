@@ -290,15 +290,32 @@
 </template>
 
 <script setup>
-import {
-    Award,
-    Clock,
-    Compass,
-    Heart,
-    Shield,
-    Star,
-    Users,
-} from "lucide-vue-next";
+import { Award, Heart, Shield, Users } from "lucide-vue-next";
+import { getOrganizationSchema, useSEO } from "../composables/useSEO";
+
+// SEO Configuration
+useSEO({
+    title: "About TravelTax - Your Premium Travel Partner in Bangladesh",
+    description:
+        "Learn about TravelTax's mission to showcase Bangladesh's beauty through curated luxury experiences. 5000+ happy travelers, 150+ destinations, 98% satisfaction rate.",
+    keywords:
+        "about traveltax, travel company bangladesh, luxury tours, travel agency, adventure tours bangladesh",
+    image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&h=630&fit=crop",
+    type: "website",
+    structuredData: {
+        "@context": "https://schema.org",
+        "@graph": [
+            getOrganizationSchema(),
+            {
+                "@type": "AboutPage",
+                name: "About TravelTax",
+                description:
+                    "Learn about TravelTax, Bangladesh's premier travel and adventure company",
+                url: "https://traveltax.com/about",
+            },
+        ],
+    },
+});
 </script>
 
 <style scoped>
